@@ -1,0 +1,59 @@
+.App {
+  /*text-align: center;*/
+}
+
+.imageWidget, .converter, .calendar, .shelf, .cart, .box{
+  position: relative;
+  height: 100px;
+  width: 150px;
+  margin: 1px;
+  float: left;
+}
+
+.imageWidget {
+  border: 3px solid #f22;
+}
+
+.converter{
+  border: 3px solid #3f8;
+}
+
+.calendar{
+  border: 3px solid #fc5;
+}
+
+.shelf{
+  position: absolute;
+  padding: 20px;
+  height: 98%;
+  width: 55%;
+  margin: 2px;
+  border: 3px solid #697
+}
+
+.cart{
+  position: absolute;
+  height: 98%;
+  width: 39%;
+  margin: 2px;
+  border: 3px solid #697;
+  right: 0;
+}
+
+.box{
+  position: relative;
+  height: 100px;
+  width: 150px;
+  margin: 1px;
+  border: 3px solid #27f;
+  float: left;
+}
+
+.block:hover {
+  border: 1px solid #ccc;
+  padding: 0;
+}
+
+.block {
+  padding: 1px;
+}
