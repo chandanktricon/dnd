@@ -2,12 +2,10 @@
   /*text-align: center;*/
 }
 
-.imageWidget, .converter, .calendar, .shelf, .cart, .box{
-  position: relative;
+.imageWidget, .converter, .calendar {
   height: 100px;
   width: 150px;
   margin: 1px;
-  float: left;
 }
 
 .imageWidget {
@@ -50,10 +48,15 @@
 }
 
 .block:hover {
-  border: 1px solid #ccc;
-  padding: 0;
+  resize: both;
+}
+
+.block:focus {
+  background: #ffd;
 }
 
 .block {
-  padding: 1px;
+  float: left;
+  padding: 2px;
+  overflow: auto;
 }

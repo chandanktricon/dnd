@@ -1,5 +1,18 @@
 import React, { Component } from 'react';
+import Patterns from './patterns/patterns';
 import '../App.css';
+
+class Cart extends Component {
+  render() {
+    return (
+      <div className="cart">
+        This is Cart, pick boxes &amp; throw on Shelf
+        <br/>
+        {Patterns.all.map( widget => <Box content={widget.name}/>)}
+      </div>
+    );
+  }
+}
 
 class Box extends Component {
   constructor(props){
@@ -19,4 +32,4 @@ class Box extends Component {
   }
 }
 
-export default Box;
+export default Cart;

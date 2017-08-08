@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Shelf from './shelf/shelf';
-import Cart from './cart/cart';
+import Shelf from './content-editor/shelf';
+import Cart from './content-editor/cart';
 
 class App extends Component {
   render() {

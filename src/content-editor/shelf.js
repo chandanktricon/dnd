@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Patterns from '../patterns/patterns';
+import Patterns from './patterns/patterns';
 import '../App.css';
 
 class Shelf extends Component {
@@ -17,16 +17,16 @@ class Shelf extends Component {
   }
 
   onDropOnBlock = (i, e) => {
-    var tempState = this.handleDrop(e, true, i + 1);
+    var tempState = this.handleDrop(e, i + 1);
     this.setState({ patterns: tempState}, () => {console.log(this.state.patterns)});
   }
 
   onDropOnShelf = (e) => {
-    var tempState = this.handleDrop(e, false, this.state.patterns.length);
+    var tempState = this.handleDrop(e, this.state.patterns.length);
     this.setState({ patterns: tempState}, () => {console.log(this.state.patterns)});
   }
 
-  handleDrop = (e, onBlock, index) => {
+  handleDrop = (e, index) => {
     var data = e.dataTransfer.getData('pattern');
     var dropped = Patterns.all.filter(pattern => pattern.name === data);
     var temp = [];
@@ -36,17 +36,39 @@ class Shelf extends Component {
     return temp;
   }
 
-  render() {
-    var style = {
-      resize: 'both'
-    };
+  handleFocus = (e) => {
+    e.target.closest('.block').style.outline = "#dd4 solid thick";
+  }
 
+  handleBlur = (e) => {
+    e.target.closest('.block').style.outline = "0";
+  }
+
+  handleMouseOver = (e) => {
+    if(document.activeElement === e.target.closest('.block')){
+      return;
+    }
+    e.target.closest('.block').style.outline = "#eec solid";
+  }
+
+  handleMouseOut = (e) => {
+    if(document.activeElement === e.target.closest('.block')){
+      return;
+    }
+    e.target.closest('.block').style.outline = "0";
+  }
+
+  render() {
     return (
-      <div className="shelf" onDragOver={this.onDragOverShelf} onDrop={this.onDropOnShelf} contentEditable="true">
+      <div className="shelf" onDragOver={this.onDragOverShelf} onDrop={this.onDropOnShelf}>
         {this.state.patterns.map( 
           (pattern, i) => 
-            <div style={this.style}
-                  className="block"
+            <div className="block"
+                  contentEditable="true"
+                  onFocus={this.handleFocus}
+                  onBlur={this.handleBlur}
+                  onMouseOver={this.handleMouseOver}
+                  onMouseOut={this.handleMouseOut}
                   onDrop={(e) => { e.preventDefault(); e.stopPropagation(); return this.onDropOnBlock(i, e); }}
                   key={i}>
               <pattern.component/>
