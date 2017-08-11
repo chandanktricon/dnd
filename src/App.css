@@ -40,7 +40,9 @@
 
 .box{
   position: relative;
-  height: 100px;
+  text-align: center;
+  line-height: 50px;
+  height: 50px;
   width: 150px;
   margin: 1px;
   border: 3px solid #27f;
@@ -48,15 +50,17 @@
 }
 
 .block:hover {
+  padding: 3px;
   resize: both;
 }
 
 .block:focus {
+  padding: 0;
+  outline: 0;
   background: #ffd;
 }
 
 .block {
-  float: left;
-  padding: 2px;
+  padding: 5px;
   overflow: auto;
 }

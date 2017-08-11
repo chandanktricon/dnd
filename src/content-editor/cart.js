@@ -20,7 +20,7 @@ class Box extends Component {
   }
 
   setDragData = (e) => {
-    var data = e.dataTransfer.setData('pattern', this.props.content);
+    e.dataTransfer.setData('pattern', this.props.content);
   }
 
   render() {

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Shelf from './content-editor/shelf';
 import Cart from './content-editor/cart';

@@ -8,7 +8,10 @@ class Shelf extends Component {
 
     this.state = {
       patterns: [],
-      itemIndex: 0
+      itemIndex: 0,
+      focusBlockIndex: null,
+      focusBlockWidth: null,
+      focusBlockInitalClientX: null
     };
   }
 
@@ -37,30 +40,65 @@ class Shelf extends Component {
   }
 
   handleFocus = (e) => {
-    e.target.closest('.block').style.outline = "#dd4 solid thick";
+    e.target.closest('.block').style.border = "5px solid #dd4";
   }
 
   handleBlur = (e) => {
-    e.target.closest('.block').style.outline = "0";
+    e.target.closest('.block').style.border = "0";
+    this.setState({ focusBlockIndex: null, focusBlockWidth: null, focusBlockInitalClientX: null});
   }
 
   handleMouseOver = (e) => {
     if(document.activeElement === e.target.closest('.block')){
       return;
     }
-    e.target.closest('.block').style.outline = "#eec solid";
+    e.target.closest('.block').style.border = "2px solid #eec";
   }
 
   handleMouseOut = (e) => {
     if(document.activeElement === e.target.closest('.block')){
       return;
     }
-    e.target.closest('.block').style.outline = "0";
+    e.target.closest('.block').style.border = "0";
+  }
+
+  handleMouseDown = (e) => {
+    var block = e.target.closest('.block');
+    var rect = e.target.closest('.block').getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    console.log(rect.left);
+    console.log(rect.width);
+    // this.setState({ focusBlockWidth: rect.width, focusBlockInitalClientX: x});
+    console.log(this.props);
+  }
+
+  handleMouseUp = (e) => {
+    console.log(e.target.closest('.block').getBoundingClientRect());
+    this.setState({ focusBlockWidth: null, focusBlockInitalClientX: null});
+  }
+
+  handleMouseMove = (e) => {
+    if(!this.state.focusBlockWidth || !this.state.focusBlockInitalClientX) return;
+
+    var block = e.target.closest('.block');
+    var rect = e.target.closest('.block').getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    // block.style.width = `${x}px`;
+
+    console.log(rect.width + '  ' + x);
+  }
+
+  getWidth(i) {
+
   }
 
   render() {
     return (
-      <div className="shelf" onDragOver={this.onDragOverShelf} onDrop={this.onDropOnShelf}>
+      <div id="shelf"
+          className="shelf" 
+          onClick={()=>{console.log(document.getElementById('shelf'))}}
+          onDragOver={this.onDragOverShelf} 
+          onDrop={this.onDropOnShelf}>
         {this.state.patterns.map( 
           (pattern, i) => 
             <div className="block"
@@ -69,6 +107,9 @@ class Shelf extends Component {
                   onBlur={this.handleBlur}
                   onMouseOver={this.handleMouseOver}
                   onMouseOut={this.handleMouseOut}
+                  onMouseDown={this.handleMouseDown}
+                  onMouseUp={this.handleMouseUp}
+                  onMouseMove={this.handleMouseMove}
                   onDrop={(e) => { e.preventDefault(); e.stopPropagation(); return this.onDropOnBlock(i, e); }}
                   key={i}>
               <pattern.component/>
