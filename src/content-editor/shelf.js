@@ -19,21 +19,21 @@ class Shelf extends Component {
   }
 
   onDrop = (e) => {
-    var tempState = this.handleDrop(e, this.state.patterns.length);
+    var tempState = this.dropPayload(e, this.state.patterns.length);
     if(!tempState) return;
     this.setState({ patterns: tempState}, () => {console.log(this.state.patterns)});
   }
 
-  handleDrop = (e, index) => {
+  dropPayload = (e, index) => {
     var data = e.dataTransfer.getData('pattern');
     if(!data) return null;
 
     var dropped = Patterns.all.filter(pattern => pattern.name === data);
-    var temp = [];
-    temp = this.state.patterns.slice(0);
-    temp.splice(index, 0, dropped[0]);
+    var payload = [];
+    payload = this.state.patterns.slice(0);
+    payload.splice(index, 0, dropped[0]);
 
-    return temp;
+    return payload;
   }
 
   handleMouseMove = (e) => {
