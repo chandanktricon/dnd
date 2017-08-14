@@ -12,8 +12,8 @@ var objectify = (name, html, icon, props) => {
   return {
     name: name,
     component: html,
-    icon: icon? icon : null,
-    props: props? props : null
+    icon: icon? icon : "",
+    props: props? props : {}
   };
 };
 

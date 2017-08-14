@@ -6,14 +6,14 @@ var objectify = (name, component, props) => {
   return {
     name: name,
     component: component,
-    props: props
+    props: props ? props : {}
   };
 };
 
 var Widgets = [ 
-  objectify('calendar', Calendar, null),
-  objectify('converter', Converter, null),
-  objectify('imageWidget', ImageWidget, null)
+  objectify('calendar', Calendar, { display : 'inline-block' }),
+  objectify('converter', Converter, { display : 'inline-block' }),
+  objectify('imageWidget', ImageWidget, { display : 'inline-block' })
 ];
 
 export default Widgets;
