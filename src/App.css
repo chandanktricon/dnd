@@ -50,19 +50,19 @@
 }
 
 .block:hover {
-  padding: 3px;
+  padding: 1px;
   resize: both;
-  border: 2px solid #8bf;
+  border: 2px solid #8bf !important;
 }
 
 .block:focus {
-  padding: 2px;
+  padding: 0;
   outline: 0;
-  border: 3px solid #8bf;
+  border: 3px solid #8bf !important;
   background: #f0f8ff;
 }
 
 .block {
-  padding: 5px;
+  padding: 3px;
   overflow: auto;
 }

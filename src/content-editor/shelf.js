@@ -14,43 +14,34 @@ class Shelf extends Component {
     };
   }
 
-  onDragOver = (e) => {
-    e.preventDefault();
+  handleDrop = (e) => {
+    this.setPatternsOnDrop(e, this.state.patterns.length);
   }
 
-  onDrop = (e) => {
-    var tempState = this.dropPayload(e, this.state.patterns.length);
-    if(!tempState) return;
-    this.setState({patterns: tempState}, () => {console.log(this.state.patterns)});
-  }
-
-  dropPayload = (e, index) => {
-    var data = e.dataTransfer.getData('pattern');
+  setPatternsOnDrop = (e, index) => {
+    var data = e.dataTransfer.getData('patternName');
     if(!data) return null;
 
     var dropped = Patterns.all.filter(pattern => pattern.name === data);
-    var payload = [];
-    payload = this.state.patterns.slice(0);
-    payload.splice(index, 0, dropped[0]);
+    var newPatterns = [];
+    newPatterns = this.state.patterns.slice(0);
+    newPatterns.splice(index, 0, dropped[0]);
 
-    return payload;
+    this.setState({ patterns: newPatterns });
   }
 
   handleMouseMove = (e) => {
-    this.resize(e, this.state.resizeMode);
-    console.log(this.state.resizeMode);
+    this.resize(e, this.state.resizeMode, this.state.activeBlock);
   }
 
   resizeMode = (mode, block) => {
-    console.log(mode);
     this.setState({ resizeMode: mode, activeBlock: block });
   }
 
-  resize = (e, mode) => {
+  resize = (e, mode, block) => {
     if(!mode)
       return;
-
-    var block = this.state.activeBlock;
+    
     var rect = block.getBoundingClientRect();
     var x = e.clientX - rect.left;
     var y = e.clientY - rect.top;
@@ -63,24 +54,22 @@ class Shelf extends Component {
       block.style.width = (x > 50) ?  `${x}px` : block.style.width;
       block.style.height = (y > 50) ?  `${y}px` : block.style.height;
     }
-
-    // console.log(rect.width + '  ' + x);
-    // console.log(this.state.resizeMode);
   }
 
   render() {
     return (
       <div id="shelf"
       className="shelf"
-      onDragOver={this.onDragOver} 
-      onDrop={this.onDrop}
-      onClick={(e) => {e.stopPropagation()}}
+      onDragOver={(e) => { e.preventDefault(); }} 
+      onDrop={this.handleDrop}
       onMouseMove={this.handleMouseMove}>
         {this.state.patterns.map( 
           (pattern, i) => 
             <Block key={i}
-            displayCss={{ display: pattern.props.display? pattern.props.display : 'block' }}
-            resizeMode={this.resizeMode}>
+              index={i}
+              displayCss={{ display: pattern.props.display ? pattern.props.display : 'block' }}
+              resizeMode={this.resizeMode}
+              setPatternsOnDrop={this.setPatternsOnDrop}>
               <pattern.component/>
             </Block>
           )

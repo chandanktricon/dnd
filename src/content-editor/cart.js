@@ -8,7 +8,7 @@ class Cart extends Component {
       <div className="cart">
         This is Cart, pick boxes &amp; throw on Shelf
         <br/>
-        {Patterns.all.map( widget => <Box content={widget.name}/>)}
+        {Patterns.all.map( pattern => <Box content={pattern.name}/>)}
       </div>
     );
   }
@@ -20,7 +20,7 @@ class Box extends Component {
   }
 
   setDragData = (e) => {
-    e.dataTransfer.setData('pattern', this.props.content);
+    e.dataTransfer.setData('patternName', this.props.content);
   }
 
   render() {
