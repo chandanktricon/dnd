@@ -52,12 +52,14 @@
 .block:hover {
   padding: 3px;
   resize: both;
+  border: 2px solid #8bf;
 }
 
 .block:focus {
-  padding: 0;
+  padding: 2px;
   outline: 0;
-  background: #ffd;
+  border: 3px solid #8bf;
+  background: #f0f8ff;
 }
 
 .block {

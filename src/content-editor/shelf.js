@@ -10,7 +10,7 @@ class Shelf extends Component {
     this.state = {
       patterns: [],
       activeBlock: null,
-      resizeMode: false
+      resizeMode: null
     };
   }
 
@@ -21,7 +21,7 @@ class Shelf extends Component {
   onDrop = (e) => {
     var tempState = this.dropPayload(e, this.state.patterns.length);
     if(!tempState) return;
-    this.setState({ patterns: tempState}, () => {console.log(this.state.patterns)});
+    this.setState({patterns: tempState}, () => {console.log(this.state.patterns)});
   }
 
   dropPayload = (e, index) => {
@@ -37,20 +37,35 @@ class Shelf extends Component {
   }
 
   handleMouseMove = (e) => {
-    if(!this.state.resizeMode)
-      return;
-    
-    var block = this.state.activeBlock;
-    var rect = block.getBoundingClientRect();
-    var x = e.clientX - rect.left;
-    block.style.width = (x > 50) ?  `${x}px` : block.style.width;
-
-    console.log(rect.width + '  ' + x);
+    this.resize(e, this.state.resizeMode);
     console.log(this.state.resizeMode);
   }
 
-  resizeMode = (bool, block) => {
-    this.setState({ resizeMode: bool, activeBlock: block });
+  resizeMode = (mode, block) => {
+    console.log(mode);
+    this.setState({ resizeMode: mode, activeBlock: block });
+  }
+
+  resize = (e, mode) => {
+    if(!mode)
+      return;
+
+    var block = this.state.activeBlock;
+    var rect = block.getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    var y = e.clientY - rect.top;
+
+    if(mode === 'x')
+      block.style.width = (x > 50) ?  `${x}px` : block.style.width;
+    if(mode === 'y')
+      block.style.height = (y > 50) ?  `${y}px` : block.style.height;
+    if(mode === 'both') {
+      block.style.width = (x > 50) ?  `${x}px` : block.style.width;
+      block.style.height = (y > 50) ?  `${y}px` : block.style.height;
+    }
+
+    // console.log(rect.width + '  ' + x);
+    // console.log(this.state.resizeMode);
   }
 
   render() {
@@ -59,6 +74,7 @@ class Shelf extends Component {
       className="shelf"
       onDragOver={this.onDragOver} 
       onDrop={this.onDrop}
+      onClick={(e) => {e.stopPropagation()}}
       onMouseMove={this.handleMouseMove}>
         {this.state.patterns.map( 
           (pattern, i) => 

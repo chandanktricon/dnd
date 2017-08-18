@@ -6,48 +6,63 @@ class Block extends Component {
     super(props);
 
     this.state = {
-      borderSelected: false
+      borderSelected: null
     };
   }
+  
+  block = e => e.target.closest('.block'); 
 
-  handleMouseOver = (e) => {
-    if(document.activeElement === e.target.closest('.block'))
-      return;
-    e.target.closest('.block').style.border = "2px solid #eec";
-  }
+  handleMouseMove = (e) => {
+    var block = this.block(e);
+    var rect = block.getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    var y = e.clientY - rect.top;
+    console.log(x + ' ' + this.state.borderSelected);
 
-  handleMouseOut = (e) => {
-    if(document.activeElement === e.target.closest('.block'))
+    if(x > rect.width || y > rect.height) {
+      block.style.cursor = 'auto';
+      this.setState({ borderSelected: null });
       return;
-    e.target.closest('.block').style.border = "0";
+    }
+
+    if(x > rect.width - 10 && y <  rect.height - 10) {
+      block.style.cursor = 'e-resize';
+      this.setState({ borderSelected: 'x' });
+    } else if(x < rect.width - 10 && y >  rect.height - 10) {
+      block.style.cursor = 's-resize';
+      this.setState({ borderSelected: 'y' });
+    } else if(x > rect.width - 10 && y >  rect.height - 10) {
+      block.style.cursor = 'se-resize';
+      this.setState({ borderSelected: 'both' });
+    } else {
+      block.style.cursor = 'auto';
+      this.setState({ borderSelected: null });
+    }
   }
 
   handleMouseDown = (e) => {
     console.log('down');
-    this.setState({ borderSelected: true });
-    var block = e.target.closest('.block');
-    this.props.resizeMode(true, block);
+    var block = (this.state.borderSelected) ? this.block(e) : null;
+    this.props.resizeMode(this.state.borderSelected, block);
   }
 
   handleMouseUp = (e) => {
     console.log('up');
-    this.setState({ borderSelected: false });
-    this.props.resizeMode(false, null);
+    this.props.resizeMode(this.state.borderSelected, null);
   }
 
   handleFocus = (e) => {
-    e.target.closest('.block').style.border = "5px solid #dd4";
-    if(this.state.borderSelected){
-      var block = e.target.closest('.block');
-      this.props.resizeMode(true, block);
+    if(!this.state.borderSelected){
+      this.props.resizeMode(this.state.borderSelected, null);
     } else {
-      this.props.resizeMode(false, null);
+      var block = this.block(e);
+      this.props.resizeMode(this.state.borderSelected, block);
     }
   }
 
   handleBlur = (e) => {
-    e.target.closest('.block').style.border = "0";
-    this.props.resizeMode(false, null);
+    var block = this.block(e);
+    this.props.resizeMode(this.state.borderSelected, null);
   }
 
   render() {
@@ -55,8 +70,7 @@ class Block extends Component {
       <div className="block"
       style={this.props.displayCss}
       contentEditable="true"
-      onMouseOver={this.handleMouseOver}
-      onMouseOut={this.handleMouseOut}
+      onMouseMove={this.handleMouseMove}
       onMouseDown={this.handleMouseDown}
       onMouseUp={this.handleMouseUp}
       onFocus={this.handleFocus}
