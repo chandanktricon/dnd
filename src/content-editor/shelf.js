@@ -31,6 +31,7 @@ class Shelf extends Component {
   }
 
   handleMouseMove = (e) => {
+    console.log(this.state.resizeMode + '  ' +this.state.activeBlock);
     this.resize(e, this.state.resizeMode, this.state.activeBlock);
   }
 
@@ -46,11 +47,11 @@ class Shelf extends Component {
     var x = e.clientX - rect.left;
     var y = e.clientY - rect.top;
 
-    if(mode === 'x')
+    if(mode === 'e')
       block.style.width = (x > 50) ?  `${x}px` : block.style.width;
-    if(mode === 'y')
+    if(mode === 's')
       block.style.height = (y > 50) ?  `${y}px` : block.style.height;
-    if(mode === 'both') {
+    if(mode === 'se') {
       block.style.width = (x > 50) ?  `${x}px` : block.style.width;
       block.style.height = (y > 50) ?  `${y}px` : block.style.height;
     }

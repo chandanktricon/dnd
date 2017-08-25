@@ -52,7 +52,7 @@
 .block:hover {
   padding: 1px;
   resize: both;
-  border: 2px solid #8bf !important;
+  border: 2px solid #e8f0ff !important;
 }
 
 .block:focus {
